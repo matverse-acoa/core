@@ -4,9 +4,9 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from dataclasses import asdict, dataclass
 from pathlib import Path
-import sys
 
 import numpy as np
 import yaml
@@ -14,8 +14,8 @@ import yaml
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.append(str(ROOT / "src"))
 
-from acoa.core.autopoiesis import AutopoieticCore, SystemState
-from acoa.metrics.cvar import CVaREstimator
+from acoa.core.autopoiesis import AutopoieticCore, SystemState  # noqa: E402
+from acoa.metrics.cvar import CVaREstimator  # noqa: E402
 
 
 @dataclass
@@ -50,17 +50,17 @@ def main() -> None:
     state = np.random.randn(cfg.state_dimension)
     ccr = AutopoieticCore()
     cvar = CVaREstimator(alpha=0.95)
-    timeline = []
 
     for i in range(cfg.n_events):
         stress = np.random.pareto(cfg.pareto_alpha)
         external = np.array([stress])
-        new_state = state + 1.5 * state + 0.3 * stress * np.random.randn(cfg.state_dimension)
+        noise = np.random.randn(cfg.state_dimension)
+        new_state = state + 1.5 * state + 0.3 * stress * noise
         st = SystemState(internal=state, external=external, output=new_state, timestamp=float(i))
         meas = ccr.measure_ccr(st)
         loss = float(np.linalg.norm(new_state - state))
         cvar.update(loss)
-        timeline.append({"event": i, "ccr": meas.ccr, "loss": loss})
+        _ = meas
         state = new_state
 
     result = {
