@@ -32,7 +32,10 @@ class CCRMeasurement:
 
 class AutopoieticCore:
     def __init__(
-        self, closure_threshold: float = 1.0, buffer_size: int = 1000, epsilon: float = 1e-10
+        self,
+        closure_threshold: float = 1.0,
+        buffer_size: int = 1000,
+        epsilon: float = 1e-10,
     ) -> None:
         self.closure_threshold = closure_threshold
         self.epsilon = epsilon
@@ -76,7 +79,9 @@ class AutopoieticCore:
         self.state_history.append(state_t)
         return measurement
 
-    def verify_operational_autopoiesis(self, min_probability: float = 0.95) -> Tuple[bool, float]:
+    def verify_operational_autopoiesis(
+        self, min_probability: float = 0.95
+    ) -> Tuple[bool, float]:
         if len(self.ccr_history) == 0:
             return False, 0.0
         autopoietic_count = sum(1 for m in self.ccr_history if m.is_autopoietic)
