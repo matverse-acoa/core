@@ -1,0 +1,11 @@
+seed: 199917401948
+n_events: 10000
+pareto_alpha: 1.5
+extreme_probability: 0.01
+extreme_multiplier: 10.0
+state_dimension: 100
+min_ccr: 1.0
+min_omega: 1.0
+max_cvar: 0.30
+min_psi: 0.85
+min_viability: 0.80
