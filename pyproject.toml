@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "acoa-core"
+version = "1.0.0b0"
+description = "Implementação principal do Adaptive Coherence-Oriented Audit (ACOA)"
+authors = [
+  { name = "Mateus Alves Arêas", email = "xmatverse@proton.me" }
+]
+readme = "README.md"
+requires-python = ">=3.10"
+license = { file = "LICENSE" }
+
+[project.optional-dependencies]
+dev = ["pytest", "black", "flake8", "mypy", "safety"]
+
+[tool.black]
+line-length = 88
