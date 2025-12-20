@@ -1,12 +1,19 @@
 from __future__ import annotations
 
-import numpy as np
+from pathlib import Path
 
-from acoa.core.autopoiesis import AutopoieticCore, SystemState
-from acoa.metrics.cvar import CVaREstimator
+import pytest
+
+
+def test_project_layout_has_src() -> None:
+    root = Path(__file__).resolve().parents[1]
+    assert (root / "src" / "acoa").exists()
 
 
 def test_autopoietic_core_measures_ccr() -> None:
+    np = pytest.importorskip("numpy")
+    from acoa.core.autopoiesis import AutopoieticCore, SystemState
+
     core = AutopoieticCore()
     state = SystemState(
         internal=np.array([1.0, 2.0]),
@@ -21,6 +28,9 @@ def test_autopoietic_core_measures_ccr() -> None:
 
 
 def test_cvar_estimator_computes_values() -> None:
+    pytest.importorskip("numpy")
+    from acoa.metrics.cvar import CVaREstimator
+
     estimator = CVaREstimator(alpha=0.8)
     for loss in [1.0, 2.0, 3.0, 4.0]:
         estimator.update(loss)
