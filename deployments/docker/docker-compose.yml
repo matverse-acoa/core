@@ -1,0 +1,30 @@
+version: '3.8'
+services:
+  acoa-api:
+    build:
+      context: ../..
+      dockerfile: deployments/docker/Dockerfile
+    image: matverse/acoa-core:latest
+    ports:
+      - "8000:8000"
+    environment:
+      - ENVIRONMENT=production
+      - LOG_LEVEL=INFO
+    volumes:
+      - ../../configs:/app/configs:ro
+    depends_on:
+      - qdrant
+      - prometheus
+
+  qdrant:
+    image: qdrant/qdrant:latest
+    ports:
+      - "6333:6333"
+
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+
+volumes:
+  acoa-data:

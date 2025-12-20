@@ -1,0 +1,7 @@
+fastapi
+uvicorn[standard]
+numpy
+pydantic
+prometheus-client
+pyyaml
+qdrant-client

@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+*.egg-info/
+dist/
+build/
+
+# Virtual environments
+.env
+.venv/
+venv/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Docker
+*.log
+acoa-data/
+qdrant-storage/
+prometheus-data/
+grafana-data/
+
+# Secrets
+.env.local
+secrets.yml
