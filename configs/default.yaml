@@ -1,0 +1,13 @@
+acoa:
+  thresholds:
+    psi_min: 0.85
+    omega_min: 1.0
+    cvar_max: 0.30
+    ccr_min: 1.0
+    viability_min: 0.80
+  server:
+    host: 0.0.0.0
+    port: 8000
+  blockchain:
+    enabled: false
+    network: polygon

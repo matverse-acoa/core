@@ -1,0 +1,9 @@
+cff-version: 1.2.0
+message: "Se você usar este software, por favor, cite o preprint associado."
+title: "ACOA: Auditoria Adaptativa Orientada à Coerência"
+authors:
+  - family-names: "Arêas"
+    given-names: "Mateus Alves"
+date-released: 2024-12-20
+version: "1.0.0-beta"
+url: "https://github.com/matverse-acoa/core"
