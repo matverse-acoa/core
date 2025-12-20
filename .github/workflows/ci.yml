@@ -9,7 +9,6 @@ on:
 concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
-on: [push, pull_request]
 
 jobs:
   test:
