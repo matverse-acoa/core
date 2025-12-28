@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>UMJAM-Ω Dashboard</title>
+    <style>
+      body {
+        font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        margin: 0;
+        padding: 2rem;
+        background: #0b0f14;
+        color: #e8ecf2;
+      }
+      .card {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 1.5rem;
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.04);
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+      }
+      h1 {
+        margin-top: 0;
+        margin-bottom: 0.5rem;
+      }
+      p {
+        line-height: 1.6;
+      }
+      code {
+        background: rgba(255, 255, 255, 0.08);
+        padding: 0.2rem 0.35rem;
+        border-radius: 6px;
+        font-size: 0.95rem;
+      }
+      ul {
+        padding-left: 1.2rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <h1>UMJAM-Ω Dashboard (Static)</h1>
+      <p>
+        Ponto inicial para publicar a interface no Hugging Face Space ou em
+        qualquer host estático. Conecte aqui gráficos e indicadores do ciclo
+        CASSANDRA (R1–R4), Ω-GATE e métricas Λ/Ψ/V/Ω.
+      </p>
+      <p>
+        Sirva localmente com <code>python -m http.server 5173</code> e abra em
+        <code>http://localhost:5173</code>.
+      </p>
+      <ul>
+        <li>Adicione assets em <code>dashboard/</code> ou migre para Vite/React.</li>
+        <li>Para deploy em Space (Static), suba apenas esta pasta.</li>
+        <li>Segredos devem ficar em variáveis do host, nunca em arquivos.</li>
+      </ul>
+    </div>
+  </body>
+</html>
