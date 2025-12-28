@@ -17,7 +17,11 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           if [ -f core/requirements/base.txt ]; then pip install -r core/requirements/base.txt; fi
-          pip install -U pytest numpy scipy pydantic
+          pip install -U pytest black numpy scipy pydantic
+
+      - name: Format check (black)
+        run: |
+          black --check .
 
       - name: Run tests
         run: |

@@ -1,51 +1,45 @@
-# UMJAM-OMEGA (Monorepo)
-Sistema de governança pós-controle com ciclo CASSANDRA (R1–R4), Ω-GATE binário (EXECUTE/INTERDICT) e camada UMJAM-Ω (superblocks, ledger append-only, métrica Λ e serviços).
+# 🧬 matverse-acoa/core
+
+[![Tests](https://github.com/matverse-acoa/core/actions/workflows/tests.yml/badge.svg)](https://github.com/matverse-acoa/core/actions/workflows/tests.yml)
+
+Repositório do **ACOA Core**: métricas (Ψ, V, Ω, CVaR, CCR) + experimentos + base para um serviço de governança (Ω-GATE).
 
 ## Estrutura
-- `core/` → núcleo Python (kernel + serviços + evidências)
-- `dashboard/` → interface de monitoramento (static ou Vite)
+- `src/acoa/` → biblioteca de métricas e utilitários
+- `experiments/` → scripts de experimento
+- `core/` → esqueleto do serviço (ainda em evolução)
+- `dashboard/` → dashboard estático inicial
 
-## Requisitos
-- Python 3.10+ (recomendado 3.11)
-- (Opcional) Node 20+ se o dashboard for Vite/React
-
-## Execução local (Core)
+## Rodar local (biblioteca + testes)
 ```bash
-cd core
 python -m venv .venv
 source .venv/bin/activate
 python -m pip install --upgrade pip
-
-# Dependências (se existir requirements)
-pip install -r requirements/base.txt
-
-# Garantir libs-base
-pip install -U numpy scipy pydantic
-
-python main.py
+pip install -U pytest numpy scipy pydantic
+pytest -q
 ```
 
-## Dashboard (Static)
+## Rodar experimento (exemplo)
 
-Se `dashboard/index.html` existir, abra no navegador ou sirva com um servidor simples:
+```bash
+python experiments/autopoiesis_ab_test/run_experiment.py --config config.yaml --output results/
+```
+
+## Dashboard (estático)
 
 ```bash
 cd dashboard
 python -m http.server 5173
 ```
 
-Abra: [http://localhost:5173](http://localhost:5173)
+## Segurança
 
-## Segurança (obrigatório)
-
-* Nunca commitar `.env` nem chaves privadas.
+* Não commitar `.env`, chaves, tokens, bases/ledgers.
 * Use `.env.example` como template.
-* Configure segredos somente em:
-
-  * variáveis de ambiente locais, ou
-  * Secrets/Variables do GitHub Actions, ou
-  * Secrets/Variables do Hugging Face Space.
 
 ## CI
 
-O workflow roda `pytest`. Se falhar, é sinal de repo incompleto (bom).
+O workflow roda:
+
+* `black --check .`
+* `pytest -q`
