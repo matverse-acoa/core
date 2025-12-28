@@ -17,11 +17,19 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           if [ -f core/requirements/base.txt ]; then pip install -r core/requirements/base.txt; fi
-          pip install -U pytest black numpy scipy pydantic
+          pip install -U pytest black flake8 mypy numpy scipy pydantic
 
       - name: Format check (black)
         run: |
           black --check .
+
+      - name: Lint (flake8)
+        run: |
+          flake8 src
+
+      - name: Type check (mypy)
+        run: |
+          mypy src/acoa/metrics/viability.py src/acoa/metrics/coherence.py src/acoa/metrics/antifragility.py src/acoa/core/autopoiesis.py
 
       - name: Run tests
         run: |

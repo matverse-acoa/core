@@ -15,7 +15,7 @@ Repositório do **ACOA Core**: métricas (Ψ, V, Ω, CVaR, CCR) + experimentos +
 python -m venv .venv
 source .venv/bin/activate
 python -m pip install --upgrade pip
-pip install -U pytest numpy scipy pydantic
+pip install -U pytest black flake8 mypy numpy scipy pydantic
 pytest -q
 ```
 
@@ -42,4 +42,6 @@ python -m http.server 5173
 O workflow roda:
 
 * `black --check .`
+* `flake8 src`
+* `mypy src/acoa/metrics/viability.py src/acoa/metrics/coherence.py src/acoa/metrics/antifragility.py src/acoa/core/autopoiesis.py`
 * `pytest -q`
