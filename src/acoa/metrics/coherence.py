@@ -152,7 +152,9 @@ class CoherenceIndex:
         return result
 
     def batch_measure(
-        self, distributions: list[np.ndarray], labels: Optional[list[str]] = None
+        self,
+        distributions: list[np.ndarray],
+        labels: Optional[list[Optional[str]]] = None,
     ) -> list[CoherenceResult]:
         """
         Measure coherence for multiple distributions.

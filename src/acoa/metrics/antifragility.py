@@ -150,7 +150,7 @@ class AntifragilityCoefficient:
         self,
         pre_stress_values: List[float],
         post_stress_values: List[float],
-        stress_magnitudes: Optional[List[float]] = None,
+        stress_magnitudes: Optional[List[Optional[float]]] = None,
         stress_types: Optional[List[Union[StressType, str]]] = None,
         **kwargs,
     ) -> None:

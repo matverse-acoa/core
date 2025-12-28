@@ -59,14 +59,16 @@ class AutopoieticCore:
         delta_external = state_t.external - state_t_minus_1.external
         delta_output = state_t.output - state_t_minus_1.output
 
-        j_internal_norm = np.linalg.norm(delta_output) / (
-            np.linalg.norm(delta_internal) + self.epsilon
+        j_internal_norm = float(
+            np.linalg.norm(delta_output)
+            / (np.linalg.norm(delta_internal) + self.epsilon)
         )
-        j_external_norm = np.linalg.norm(delta_output) / (
-            np.linalg.norm(delta_external) + self.epsilon
+        j_external_norm = float(
+            np.linalg.norm(delta_output)
+            / (np.linalg.norm(delta_external) + self.epsilon)
         )
-        ccr = j_internal_norm / (j_external_norm + self.epsilon)
-        is_autopoietic = ccr > self.closure_threshold
+        ccr = float(j_internal_norm / (j_external_norm + self.epsilon))
+        is_autopoietic = bool(ccr > self.closure_threshold)
 
         measurement = CCRMeasurement(
             ccr=ccr,
