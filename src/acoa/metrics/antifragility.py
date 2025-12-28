@@ -220,8 +220,7 @@ class AntifragilityCoefficient:
         if v_pre < 1e-10:
             omega = 0.0
             warnings.warn(
-                f"Pre-stress viability near zero ({v_pre:.2e}), "
-                "Ω may be unreliable",
+                f"Pre-stress viability near zero ({v_pre:.2e}), " "Ω may be unreliable",
                 RuntimeWarning,
             )
         else:
@@ -320,9 +319,7 @@ class AntifragilityCoefficient:
             return {}
 
         magnitudes = [
-            e.stress_magnitude
-            for e in self.events
-            if e.stress_magnitude is not None
+            e.stress_magnitude for e in self.events if e.stress_magnitude is not None
         ]
 
         if len(magnitudes) < 4:
@@ -403,9 +400,7 @@ class AntifragilityCoefficient:
         changes = [post - pre for pre, post in zip(pre_values, post_values)]
 
         magnitudes = [
-            e.stress_magnitude
-            for e in self.events
-            if e.stress_magnitude is not None
+            e.stress_magnitude for e in self.events if e.stress_magnitude is not None
         ]
 
         return {
@@ -445,14 +440,10 @@ class AntifragilityCoefficient:
         filtered = self.events.copy()
 
         if min_pre_stress is not None:
-            filtered = [
-                e for e in filtered if e.pre_stress_viability >= min_pre_stress
-            ]
+            filtered = [e for e in filtered if e.pre_stress_viability >= min_pre_stress]
 
         if max_pre_stress is not None:
-            filtered = [
-                e for e in filtered if e.pre_stress_viability <= max_pre_stress
-            ]
+            filtered = [e for e in filtered if e.pre_stress_viability <= max_pre_stress]
 
         if stress_types is not None:
             filtered = [e for e in filtered if e.stress_type in stress_types]
