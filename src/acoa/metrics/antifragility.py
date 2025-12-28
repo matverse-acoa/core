@@ -217,15 +217,24 @@ class AntifragilityCoefficient:
         v_pre = np.mean(pre_values)
         v_post = np.mean(post_values)
 
+        warning_message = None
+
         if v_pre < 1e-10:
             omega = 0.0
-            warnings.warn(
+            warning_message = (
                 f"Pre-stress viability near zero ({v_pre:.2e}), "
-                "Ω may be unreliable",
-                RuntimeWarning,
+                "Ω may be unreliable"
             )
         else:
             omega = v_post / v_pre
+            if v_pre < 1e-2:
+                warning_message = (
+                    f"Pre-stress viability is very low ({v_pre:.2e}); "
+                    "interpret Ω with caution"
+                )
+
+        if warning_message:
+            warnings.warn(warning_message, RuntimeWarning)
 
         ci = None
         p_value = None
@@ -244,7 +253,7 @@ class AntifragilityCoefficient:
 
         result = AntifragilityResult(
             omega=float(omega),
-            gain_under_stress=omega > 1.0,
+            gain_under_stress=bool(omega > 1.0),
             v_pre_stress=float(v_pre),
             v_post_stress=float(v_post),
             n_events=len(self.events),
