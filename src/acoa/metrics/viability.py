@@ -97,9 +97,7 @@ class ViabilityIndex:
         """Validate that weights are properly configured."""
         for component in self.components:
             if component.value not in self.weights:
-                raise ValueError(
-                    f"Component {component.value} missing from weights"
-                )
+                raise ValueError(f"Component {component.value} missing from weights")
 
         weight_keys = set(self.weights.keys())
         component_keys = {c.value for c in self.components}
@@ -206,7 +204,9 @@ class ViabilityIndex:
 
         return result
 
-    def measure_from_dict(self, component_dict: Dict[str, float], **kwargs) -> ViabilityResult:
+    def measure_from_dict(
+        self, component_dict: Dict[str, float], **kwargs
+    ) -> ViabilityResult:
         """
         Measure viability from dictionary of components.
 
