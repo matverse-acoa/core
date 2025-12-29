@@ -1,26 +1,29 @@
 # 🧬 matverse-acoa/core
 
-[![Tests](https://github.com/matverse-acoa/core/actions/workflows/tests.yml/badge.svg)](https://github.com/matverse-acoa/core/actions/workflows/tests.yml)
+ACOA Core: métricas (Ψ, V, Ω, CVaR, CCR) + experimentos + base para governança binária (Ω-GATE).
 
-Repositório do **ACOA Core**: métricas (Ψ, V, Ω, CVaR, CCR) + experimentos + base para um serviço de governança (Ω-GATE).
+[![Tests](https://github.com/matverse-acoa/core/actions/workflows/tests.yml/badge.svg)](https://github.com/matverse-acoa/core/actions/workflows/tests.yml)
+[![ORCID](https://img.shields.io/badge/ORCID-0009--0008--2973--4047-green)](https://orcid.org/0009-0008-2973-4047)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## Estrutura
-- `src/acoa/` → biblioteca de métricas e utilitários
+- `src/acoa/` → biblioteca (métricas + núcleo)
 - `experiments/` → scripts de experimento
-- `core/` → esqueleto do serviço (ainda em evolução)
+- `tools/` → utilitários (ex.: ancoragem on-chain)
+- `docs/` → políticas e especificações
 - `dashboard/` → dashboard estático inicial
+- `core/` → placeholder do “serviço” (evolui depois, sem bloquear o core)
 
-## Rodar local (biblioteca + testes)
-```bash
-python -m venv .venv
-source .venv/bin/activate
-python -m pip install --upgrade pip
-pip install -U pytest black flake8 mypy numpy scipy pydantic
-pytest -q
-```
+## Execução (via CI)
+Este repositório é validado por GitHub Actions:
+- `black --check .`
+- `flake8 src`
+- `mypy` (alvos explicitados no workflow)
+- `pytest -q`
+
+Sem “modo manual”, sem desculpas: **passa ou bloqueia**.
 
 ## Rodar experimento (exemplo)
-
 ```bash
 python experiments/autopoiesis_ab_test/run_experiment.py --config config.yaml --output results/
 ```
@@ -32,16 +35,11 @@ cd dashboard
 python -m http.server 5173
 ```
 
+## Políticas canônicas
+
+* `docs/POLICY_SIGNING_AND_GOVERNANCE.md` (MetaMask + hard gate on-chain)
+
 ## Segurança
 
-* Não commitar `.env`, chaves, tokens, bases/ledgers.
-* Use `.env.example` como template.
-
-## CI
-
-O workflow roda:
-
-* `black --check .`
-* `flake8 src`
-* `mypy src/acoa/metrics/viability.py src/acoa/metrics/coherence.py src/acoa/metrics/antifragility.py src/acoa/core/autopoiesis.py`
-* `pytest -q`
+* Não commitar `.env`, seeds, chaves, tokens, bases/ledgers.
+* `.env.example` é só template.

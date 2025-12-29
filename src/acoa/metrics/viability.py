@@ -217,11 +217,21 @@ class ViabilityIndex:
         Returns:
             ViabilityResult
         """
-        uptime = component_dict.get("uptime", 0.0)
-        error_rate = component_dict.get("error_rate", 0.0)
-        recovery_capacity = component_dict.get("recovery_capacity", 0.0)
-        resource_stability = component_dict.get("resource_stability")
-        adaptive_capacity = component_dict.get("adaptive_capacity")
+        uptime = float(component_dict.get("uptime", 0.0))
+        error_rate = float(component_dict.get("error_rate", 0.0))
+        recovery_capacity = float(component_dict.get("recovery_capacity", 0.0))
+
+        resource_stability_val = component_dict.get("resource_stability")
+        adaptive_capacity_val = component_dict.get("adaptive_capacity")
+
+        resource_stability = (
+            float(resource_stability_val)
+            if resource_stability_val is not None
+            else None
+        )
+        adaptive_capacity = (
+            float(adaptive_capacity_val) if adaptive_capacity_val is not None else None
+        )
 
         return self.measure(
             uptime=uptime,
