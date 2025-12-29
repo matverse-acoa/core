@@ -60,7 +60,9 @@ class CoherenceIndex:
         self.p_ref: Optional[np.ndarray] = None
         self.history: list[Dict[str, Any]] = []
 
-    def set_reference(self, p_reference: np.ndarray, label: Optional[str] = None) -> None:
+    def set_reference(
+        self, p_reference: np.ndarray, label: Optional[str] = None
+    ) -> None:
         """
         Set reference distribution for future measurements.
 
@@ -113,9 +115,7 @@ class CoherenceIndex:
                 self.set_reference(p_curr, label="initial_reference")
             p_ref_norm = self.p_ref.copy() if self.p_ref is not None else p_curr_norm
         else:
-            p_ref = self._validate_distribution(
-                p_reference, label="provided_reference"
-            )
+            p_ref = self._validate_distribution(p_reference, label="provided_reference")
             p_ref_norm = self._normalize(p_ref)
 
         d_kl = self._compute_kl_divergence(p_curr_norm, p_ref_norm)
@@ -152,7 +152,9 @@ class CoherenceIndex:
         return result
 
     def batch_measure(
-        self, distributions: list[np.ndarray], labels: Optional[list[str]] = None
+        self,
+        distributions: list[np.ndarray],
+        labels: Optional[list[Optional[str]]] = None,
     ) -> list[CoherenceResult]:
         """
         Measure coherence for multiple distributions.
@@ -194,7 +196,9 @@ class CoherenceIndex:
             "n_measurements": len(psi_values),
         }
 
-    def _validate_distribution(self, p: np.ndarray, label: str = "distribution") -> np.ndarray:
+    def _validate_distribution(
+        self, p: np.ndarray, label: str = "distribution"
+    ) -> np.ndarray:
         """Validate probability distribution."""
         p_array = np.asarray(p, dtype=np.float64)
 
