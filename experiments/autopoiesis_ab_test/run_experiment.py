@@ -56,7 +56,9 @@ def main() -> None:
         external = np.array([stress])
         noise = np.random.randn(cfg.state_dimension)
         new_state = state + 1.5 * state + 0.3 * stress * noise
-        st = SystemState(internal=state, external=external, output=new_state, timestamp=float(i))
+        st = SystemState(
+            internal=state, external=external, output=new_state, timestamp=float(i)
+        )
         meas = ccr.measure_ccr(st)
         loss = float(np.linalg.norm(new_state - state))
         cvar.update(loss)

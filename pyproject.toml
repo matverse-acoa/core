@@ -22,3 +22,5 @@ dev = ["pytest", "black", "flake8", "mypy", "safety", "numpy>=1.23", "scipy>=1.1
 
 [tool.black]
 line-length = 88
+target-version = ["py311"]
+include = '\.pyi?$'
