@@ -28,6 +28,16 @@ Sem “modo manual”, sem desculpas: **passa ou bloqueia**.
 python experiments/autopoiesis_ab_test/run_experiment.py --config config.yaml --output results/
 ```
 
+## OME-1 (ciclo mínimo end-to-end)
+```bash
+make ome1
+# artefatos: receipt_ome1.json e rb_ledger.sqlite3
+```
+Para auditoria fria:
+```bash
+make auditpack  # gera auditpack.zip com hashes e receipt
+```
+
 ## Dashboard (estático)
 
 ```bash

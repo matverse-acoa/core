@@ -6,3 +6,5 @@ pydantic
 prometheus-client
 pyyaml
 qdrant-client
+requests
+pqcrypto

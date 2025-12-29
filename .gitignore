@@ -9,6 +9,10 @@
 **/*private*
 .env.local
 secrets.yml
+_auditpack/
+auditpack.zip
+rb_ledger.sqlite3
+receipt_ome1.json
 
 # --- python ---
 __pycache__/
