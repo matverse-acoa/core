@@ -6,8 +6,5 @@ pydantic
 prometheus-client
 pyyaml
 qdrant-client
-web3
-eth-hash
-eth-utils
 requests
 pqcrypto
