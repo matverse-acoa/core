@@ -97,9 +97,7 @@ class ViabilityIndex:
         """Validate that weights are properly configured."""
         for component in self.components:
             if component.value not in self.weights:
-                raise ValueError(
-                    f"Component {component.value} missing from weights"
-                )
+                raise ValueError(f"Component {component.value} missing from weights")
 
         weight_keys = set(self.weights.keys())
         component_keys = {c.value for c in self.components}
@@ -206,7 +204,9 @@ class ViabilityIndex:
 
         return result
 
-    def measure_from_dict(self, component_dict: Dict[str, float], **kwargs) -> ViabilityResult:
+    def measure_from_dict(
+        self, component_dict: Dict[str, float], **kwargs
+    ) -> ViabilityResult:
         """
         Measure viability from dictionary of components.
 
@@ -217,21 +217,25 @@ class ViabilityIndex:
         Returns:
             ViabilityResult
         """
-        args = {}
-        for comp in [
-            "uptime",
-            "error_rate",
-            "recovery_capacity",
-            "resource_stability",
-            "adaptive_capacity",
-        ]:
-            if comp in component_dict:
-                args[comp] = component_dict[comp]
+        uptime = component_dict.get("uptime", 0.0)
+        error_rate = component_dict.get("error_rate", 0.0)
+        recovery_capacity = component_dict.get("recovery_capacity", 0.0)
+        resource_stability = component_dict.get("resource_stability")
+        adaptive_capacity = component_dict.get("adaptive_capacity")
 
-        return self.measure(**args, **kwargs)
+        return self.measure(
+            uptime=uptime,
+            error_rate=error_rate,
+            recovery_capacity=recovery_capacity,
+            resource_stability=resource_stability,
+            adaptive_capacity=adaptive_capacity,
+            **kwargs,
+        )
 
     def batch_measure(
-        self, measurements: List[Dict[str, float]], labels: Optional[List[str]] = None
+        self,
+        measurements: List[Dict[str, float]],
+        labels: Optional[List[Optional[str]]] = None,
     ) -> List[ViabilityResult]:
         """
         Batch measurement of viability.
@@ -309,7 +313,7 @@ class ViabilityIndex:
 
         latest = self.history[-1]
 
-        checks: Dict[str, bool] = {
+        checks: Dict[str, Any] = {
             "composite_viable": latest.v_composite >= v_min,
             "composite_value": latest.v_composite,
         }

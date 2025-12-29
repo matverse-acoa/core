@@ -1,26 +1,39 @@
-# Python
+# --- secrets / env ---
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+**/secrets/**
+**/*secret*
+**/*private*
+.env.local
+secrets.yml
+
+# --- python ---
 __pycache__/
 *.py[cod]
+*.pyc
 *.so
+.venv/
+venv/
 *.egg-info/
 dist/
 build/
+.pytest_cache/
 
-# Virtual environments
-.env
-.venv/
-venv/
+# --- node ---
+node_modules/
+dist/
+.vite/
+.cache/
 
-# Jupyter
-.ipynb_checkpoints/
-
-# Docker
+# --- data / services ---
 *.log
 acoa-data/
 qdrant-storage/
 prometheus-data/
 grafana-data/
 
-# Secrets
-.env.local
-secrets.yml
+# --- docs / notebooks ---
+.ipynb_checkpoints/
