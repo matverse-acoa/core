@@ -70,4 +70,6 @@ class CVaREstimator:
         if len(self.buffer) == 0:
             return np.array([])
         est = self.compute()
-        return np.array([l for l in self.buffer if l > est.var])
+        return np.array(
+            [loss_value for loss_value in self.buffer if loss_value > est.var]
+        )
