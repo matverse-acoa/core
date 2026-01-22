@@ -171,6 +171,30 @@ Exemplo: `feat(core): add entropy threshold to Ω-GATE`
 3. **Assina** os hashes do pacote (PoSE/PoLE) e registra no contrato conforme a política:
    - ver `docs/POLICY_SIGNING_AND_GOVERNANCE.md`
 
+### 11. ASSINATURA AUTOMATIZADA INTELIGENTE (EXECUÇÕES COERENTES)
+Objetivo: assinar commits **e** gerar um receipt assinado da execução coerente (hash do que está staged), com trilhas auditáveis.
+
+**Setup (SSH signing no Git):**
+```bash
+git config --global gpg.format ssh
+git config --global commit.gpgsign true
+git config --global user.signingkey ~/.matverse/keys/commit_signing_ed25519.pub
+```
+
+**Hooks (PBSE receipts + trailers):**
+1. `pre-commit`: bloqueia commit vazio e valida o staged.
+2. `commit-msg`: gera `receipt.json` + assinatura e injeta trailers:
+   - `Coherence-Receipt: <id>`
+   - `Coherence-Sig: sha256:<hash>`
+
+**Verificação local:**
+```bash
+ssh-keygen -Y verify -n "matverse.pbse" \
+  -f ~/.config/git/allowed_signers \
+  -s ~/.matverse/receipts/<RECEIPT_ID>.sig \
+  < ~/.matverse/receipts/<RECEIPT_ID>.json
+```
+
 **Próxima ação:**  
 Quer que eu gere o relatório de cobertura de testes e o PDF de documentação técnica agora?  
 Ou fecha o pacote e prepara o .tar.gz final para entrega?
