@@ -162,6 +162,11 @@ Exemplo: `feat(core): add entropy threshold to Ω-GATE`
 - LICENSE — MPL-2.0 (proprietary)
 - CI GitHub — .github/workflows/ci.yml (validado)
 
+### 10. RODA, EXECUTA E ASSINA
+1. **Roda** os fluxos ponta-a-ponta (OME-1 + auditpack).
+2. **Executa** a validação completa de lint/test/build conforme `build.sh`.
+3. **Assina** os hashes do pacote (PoSE/PoLE) e registra no contrato conforme a política.
+
 **Próxima ação:**  
 Quer que eu gere o relatório de cobertura de testes e o PDF de documentação técnica agora?  
 Ou fecha o pacote e prepara o .tar.gz final para entrega?
