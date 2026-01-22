@@ -1,0 +1,72 @@
+name: PBSE Autoformat Black
+
+on:
+  workflow_run:
+    workflows: ["tests"]
+    types: [completed]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  autofmt:
+    if: github.event.workflow_run.conclusion == 'failure'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout failing SHA
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Black
+        run: |
+          python -m pip install -U pip black
+
+      - name: Confirm it's a Black failure
+        id: detect
+        run: |
+          set +e
+          black --check .
+          rc=$?
+          set -e
+          if [ "$rc" -eq 0 ]; then
+            echo "do_fix=0" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+          echo "do_fix=1" >> $GITHUB_OUTPUT
+
+      - name: Stop if not Black
+        if: steps.detect.outputs.do_fix != '1'
+        run: |
+          echo "PBSE: falha não é black; saindo."
+          exit 0
+
+      - name: Create branch and format
+        run: |
+          git config user.name "pbse-bot"
+          git config user.email "pbse-bot@users.noreply.github.com"
+          BR="pbse/autofmt/black-${{ github.event.workflow_run.id }}"
+          echo "BRANCH=$BR" >> $GITHUB_ENV
+          git checkout -b "$BR"
+          black .
+          git add -A
+          git diff --cached --quiet && { echo "PBSE: nada a commitar"; exit 0; }
+          git commit -m "style: autoformat with black (PBSE)"
+          git push -u origin "$BR"
+
+      - name: Open PR
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh pr create \
+            --title "style: autoformat with black (PBSE)" \
+            --body "Gerado automaticamente porque o CI falhou em \`black --check\` (gate fail-closed)." \
+            --head "$BRANCH" \
+            --base "main" || true
