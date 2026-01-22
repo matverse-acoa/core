@@ -1,0 +1,65 @@
+name: PBSE Gate
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  push:
+    branches: ["main"]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install deps (determinístico)
+        run: |
+          python -m pip install -U pip setuptools wheel
+          if [ -f pyproject.toml ]; then
+            python -m pip install -e ".[dev]" || python -m pip install -e .
+          elif [ -f requirements-dev.txt ]; then
+            python -m pip install -r requirements.txt -r requirements-dev.txt
+          elif [ -f requirements.txt ]; then
+            python -m pip install -r requirements.txt
+            python -m pip install pytest
+          else
+            echo "PBSE: sem deps declaradas" >&2
+            exit 2
+          fi
+          python -m pip install pyyaml
+
+      - name: Run tests
+        run: |
+          pytest -q
+
+      - name: Generate receipt (audit)
+        run: |
+          python tools/receipt.py | tee /tmp/receipt_out.json
+          rid=$(python -c "import json;print(json.load(open('/tmp/receipt_out.json'))['receipt_id'])")
+          echo "RECEIPT_ID=$rid" >> $GITHUB_ENV
+
+      - name: Commit receipts back (PR only)
+        if: github.event_name == 'pull_request'
+        run: |
+          git config user.name "pbse-bot"
+          git config user.email "pbse-bot@users.noreply.github.com"
+          git add audit/receipts || true
+          git diff --cached --quiet && exit 0
+          git commit -m "audit: add pbse receipt $RECEIPT_ID"
+          git push
+
+      - name: PBSE decision
+        run: |
+          python tools/pbse_guard.py | tee pbse_decision.json
+          python -c "import json;d=json.load(open('pbse_decision.json')); exit(0 if d['decision']=='PASS' else 3)"
