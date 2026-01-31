@@ -2,16 +2,35 @@ name: Integração Contínua
 
 on:
   pull_request:
+    paths-ignore:
+      - "**/*.md"
+      - "docs/**"
   push:
     branches:
       - main
+    paths-ignore:
+      - "**/*.md"
+      - "docs/**"
 
 concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
+  detect:
+    runs-on: ubuntu-latest
+    outputs:
+      run_tests: ${{ steps.detect.outputs.run_tests }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: detect
+        run: |
+          chmod +x scripts/detect_code_changes.sh
+          ./scripts/detect_code_changes.sh
+
   test:
+    needs: detect
+    if: needs.detect.outputs.run_tests == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

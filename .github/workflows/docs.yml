@@ -1,0 +1,19 @@
+name: Docs Check
+
+on:
+  push:
+    paths:
+      - "**/*.md"
+      - "docs/**"
+  pull_request:
+    paths:
+      - "**/*.md"
+      - "docs/**"
+
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Docs-only change
+        run: echo "Docs-only change — no scientific tests required."
