@@ -6,6 +6,7 @@ echo "Checking for docs-only changes..."
 EVENT="${GITHUB_EVENT_NAME:-}"
 BASE_REF="${GITHUB_BASE_REF:-}"
 RUN_TESTS=1
+OUTPUT_FILE="${GITHUB_OUTPUT:-/dev/null}"
 
 if [[ "$EVENT" == "pull_request" && -n "$BASE_REF" ]]; then
   echo "PR detected. Base ref: $BASE_REF"
@@ -37,7 +38,9 @@ fi
 
 if [[ "$RUN_TESTS" -eq 0 ]]; then
   echo "Docs/workflows-only change detected. Skipping tests."
-  exit 0
+else
+  echo "Code changes detected. Proceeding with tests."
 fi
 
-echo "Code changes detected. Proceeding with tests."
+echo "run_tests=$RUN_TESTS" >> "$OUTPUT_FILE"
+exit 0
