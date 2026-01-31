@@ -1,6 +1,6 @@
 # 🧬 matverse-acoa/core
 
-ACOA Core: métricas (Ψ, V, Ω, CVaR, CCR) + experimentos + base para governança binária (Ω-GATE).
+ACOA Core: métricas (Ψ, Ω, CVaR, CCR, α) + experimentos + base para governança binária (Ω-GATE).
 
 [![Tests](https://github.com/matverse-acoa/core/actions/workflows/tests.yml/badge.svg)](https://github.com/matverse-acoa/core/actions/workflows/tests.yml)
 [![ORCID](https://img.shields.io/badge/ORCID-0009--0008--2973--4047-green)](https://orcid.org/0009-0008-2973-4047)
@@ -71,4 +71,3 @@ Qualquer efeito colateral fora do processo científico é erro de arquitetura.
 - Independência de autoridade humana
 
 Este repositório é válido **mesmo isolado do resto do sistema**.
-
