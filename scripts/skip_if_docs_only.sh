@@ -9,7 +9,14 @@ RUN_TESTS=1
 
 if [[ "$EVENT" == "pull_request" && -n "$BASE_REF" ]]; then
   echo "PR detected. Base ref: $BASE_REF"
-  git fetch origin "$BASE_REF" --depth=1
+  if ! git fetch origin "$BASE_REF" --depth=1; then
+    echo "Base ref not found on origin. Fetching from base repo."
+    BASE_REPO_URL="https://github.com/${GITHUB_REPOSITORY}.git"
+    if [[ -n "${GITHUB_TOKEN:-}" ]]; then
+      BASE_REPO_URL="https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+    fi
+    git fetch "$BASE_REPO_URL" "$BASE_REF" --depth=1
+  fi
 
   CHANGED_FILES=$(git diff --name-only FETCH_HEAD...HEAD)
 
