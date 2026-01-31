@@ -15,7 +15,7 @@ if [[ "$EVENT" == "pull_request" && -n "$BASE_REF" ]]; then
     git fetch "$BASE_REPO_URL" "$BASE_REF" --depth=1
   fi
 
-  CHANGED_FILES=$(git diff --name-only FETCH_HEAD...HEAD)
+  CHANGED_FILES=$(git diff --name-only FETCH_HEAD..HEAD)
 
   echo "Changed files:"
   echo "$CHANGED_FILES"

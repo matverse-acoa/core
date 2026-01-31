@@ -14,6 +14,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: Early exit for docs-only changes
         run: |
           chmod +x scripts/skip_if_docs_only.sh
