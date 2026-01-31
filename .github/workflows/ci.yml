@@ -2,9 +2,15 @@ name: Integração Contínua
 
 on:
   pull_request:
+    paths-ignore:
+      - "**/*.md"
+      - "docs/**"
   push:
     branches:
       - main
+    paths-ignore:
+      - "**/*.md"
+      - "docs/**"
 
 concurrency:
   group: ci-${{ github.ref }}
@@ -15,6 +21,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Early exit for docs-only changes
+        run: |
+          chmod +x scripts/skip_if_docs_only.sh
+          ./scripts/skip_if_docs_only.sh
       - name: Configurar o Python
         uses: actions/setup-python@v4
         with:

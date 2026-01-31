@@ -1,13 +1,23 @@
 name: tests
 on:
   push:
+    paths-ignore:
+      - "**/*.md"
+      - "docs/**"
   pull_request:
+    paths-ignore:
+      - "**/*.md"
+      - "docs/**"
 
 jobs:
   python:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Early exit for docs-only changes
+        run: |
+          chmod +x scripts/skip_if_docs_only.sh
+          ./scripts/skip_if_docs_only.sh
 
       - uses: actions/setup-python@v5
         with:
