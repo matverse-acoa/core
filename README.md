@@ -1,73 +1,100 @@
-# 🧬 matverse-acoa/core
+# matverse-acoa/core
 
-ACOA Core: métricas (Ψ, Ω, CVaR, CCR, α) + experimentos + base para governança binária (Ω-GATE).
-
-[![Tests](https://github.com/matverse-acoa/core/actions/workflows/tests.yml/badge.svg)](https://github.com/matverse-acoa/core/actions/workflows/tests.yml)
-[![ORCID](https://img.shields.io/badge/ORCID-0009--0008--2973--4047-green)](https://orcid.org/0009-0008-2973-4047)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-
-
-ACOA Core é o **núcleo científico** do MatVerse.
-
-Este repositório define, implementa e valida as **métricas invariantes**
-que governam todo o sistema:
-
-- Ψ — coerência semântica observável
-- Ω — viabilidade sistêmica
-- CVaR — risco de cauda
-- CCR — consistência de decisão
-- α — antifragilidade
-
-Aqui vivem **leis mensuráveis**, não decisões e não execução.
+> **Versão:** 1.0  
+> **Status:** Produção  
+> **ORCID:** [0009-0008-2973-4047](https://orcid.org/0009-0008-2973-4047)  
+> **Organização:** [matverse-acoa](https://github.com/matverse-acoa)
 
 ---
 
-## O que este repositório faz
+## Descrição
 
-- Implementa métricas formais em código auditável
-- Executa experimentos científicos reprodutíveis
-- Valida propriedades de coerência, risco e antifragilidade
-- Produz artefatos verificáveis (JSON, hashes, relatórios)
+O repositório **`core`** constitui o núcleo científico-computacional do MatVerse, responsável por **materializar o fluxo Science → Evidence** segundo a Cláusula de Imutabilidade e a Lei de Admissibilidade Científica.
 
----
-
-## O que este repositório NÃO faz
-
-- Não executa ações no mundo
-- Não decide políticas
-- Não escreve em ledgers de produção
-- Não contém lógica de runtime
-- Não depende de serviços externos
+- **Função:** execução científica reprodutível, auditoria e verificação de métricas/invariantes.
+- **Domínio:** coerência, risco de cauda, antifragilidade, auditabilidade e governança verificável.
 
 ---
 
-## Regime Arquitetural
+## Cláusula Constitucional
 
-**REGIME: LAW**
+> Este repositório é subordinado à Cláusula de Imutabilidade e à Lei de Admissibilidade Científica do MatVerse.  
+> **Nada que comprometa o fluxo Science → Evidence será permitido, incorporado ou tolerado.**
 
-Este repositório define leis.
-Leis não executam ações.
-Leis não negociam com contexto.
+Referências normativas nesta base:
 
-Qualquer efeito colateral fora do processo científico é erro de arquitetura.
-
----
-
-## Estrutura
-
-- `src/acoa/` — biblioteca de métricas e invariantes
-- `experiments/` — experimentos reprodutíveis
-- `tools/` — utilitários (ex.: ancoragem, replay)
-- `docs/` — especificações formais
-- `tests/` — validação automatizada
+- `docs/MATVERSE-OMEGA-GATE-v2.1-CANON.md`
+- `docs/LEI_DE_ADMISSIBILIDADE_CIENTIFICA_MATVERSE_v1.0.md`
 
 ---
 
-## Garantias
+## Estrutura de Diretórios
 
-- Determinismo
-- Reprodutibilidade
-- Auditabilidade externa
-- Independência de autoridade humana
+```plaintext
+core/
+├── README.md
+├── CONTRIBUTING.md
+├── CODEOWNERS
+├── src/acoa/
+│   ├── core/
+│   ├── metrics/
+│   └── ...
+├── tests/
+├── docs/
+├── experiments/
+├── tools/
+├── scripts/
+└── deployments/
+```
 
-Este repositório é válido **mesmo isolado do resto do sistema**.
+---
+
+## Invariantes do Core
+
+- **Ψ-Index:** coerência semântica observável.
+- **CVaR:** controle de risco de cauda.
+- **Ω-GATE:** operador de admissibilidade científica.
+- **PoLE / PoSE:** evolução e evidência verificáveis.
+- **Registro auditável:** artefatos assináveis e verificáveis por hash.
+
+---
+
+## Uso
+
+```bash
+# clonar repositório
+git clone https://github.com/matverse-acoa/core
+cd core
+
+# instalar dependências
+pip install -r requirements/base.txt
+pip install -r requirements/dev.txt
+
+# executar testes
+pytest -q
+```
+
+---
+
+## Contribuição
+
+Leia o [CONTRIBUTING.md](CONTRIBUTING.md) para padrões de contribuição, critérios de revisão e requisitos de validação.
+
+---
+
+## Referências
+
+- [MATVERSE-OMEGA-GATE v2.1 (canônico)](docs/MATVERSE-OMEGA-GATE-v2.1-CANON.md)
+- [Lei de Admissibilidade Científica do MatVerse](docs/LEI_DE_ADMISSIBILIDADE_CIENTIFICA_MATVERSE_v1.0.md)
+
+---
+
+## Código de Conduta
+
+Ao contribuir, você concorda com a impossibilidade de modificar retroativamente evidências ou violar invariantes formais já estabelecidos.
+
+---
+
+## Licença
+
+[MIT License](LICENSE)
