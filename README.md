@@ -51,6 +51,12 @@ Leis não negociam com contexto.
 
 Qualquer efeito colateral fora do processo científico é erro de arquitetura.
 
+
+## Documentos normativos
+
+- `docs/MATVERSE-OMEGA-GATE-v2.1-CANON.md` — especificação canônica do núcleo de governança verificável.
+- `docs/LEI_DE_ADMISSIBILIDADE_CIENTIFICA_MATVERSE_v1.0.md` — lei formal das condições de existência computacional no fluxo Science → Evidence.
+
 ---
 
 ## Estrutura
