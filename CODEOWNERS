@@ -1,0 +1,9 @@
+# Owners padrão do repositório core
+* @matverse-acoa/maintainers
+
+# Documentação normativa
+/docs/ @matverse-acoa/maintainers
+
+# Núcleo científico
+/src/ @matverse-acoa/maintainers
+/tests/ @matverse-acoa/maintainers
