@@ -7,6 +7,7 @@ ARCHIVE_EXECUTION = BLOCK
 STATIC_AUDIT = PASS
 HASH_LEDGER = REQUIRED
 ZK_PROVENANCE = REQUIRED
+SECRET_REF_NORMALIZATION = REQUIRED
 ```
 
 ## Scope
@@ -33,6 +34,9 @@ SuperOrgaismo.zip
 .zkey
 .wtns
 .ptau
+.so
+.a
+.dylib
 ```
 
 ## Sample Registered Hashes
@@ -48,26 +52,28 @@ SuperOrgaismo.zip
 ## Security Findings
 
 ```text
-No native binaries observed in first-level analysis except later-detected libs in hamilton.zip.
 Placeholder secrets detected in examples/documentation.
 No confirmed plaintext production secrets detected.
+Native libraries were reported in hamilton.zip and require binary provenance audit.
+ZK artifacts exist without a verified zkey <-> ptau <-> circom trust chain.
 ```
 
 ## Ω-Gate Interpretation
 
 ```text
-Ψ  ≈ 0.83
+Ψ    ≈ 0.83
 CVaR ≈ 0.08
 PoLE ≈ 0.20
-STATUS = ESCALATE
+STATUS = BLOCK
 ```
 
 Reason:
 
 ```text
-secret placeholders still present
-external anchors absent
-ZK provenance incomplete
+CVaR > 0.05 triggers fail-closed behavior.
+secret placeholders still present.
+external anchors absent.
+ZK provenance incomplete.
 ```
 
 ## Mandatory Next Steps
@@ -76,6 +82,7 @@ ZK provenance incomplete
 2. Validate zkey <-> ptau <-> circom trust chain.
 3. Publish immutable hash-ledger anchor.
 4. Continue nested ZIP audit before execution.
+5. Audit native libraries reported in hamilton.zip before any runtime use.
 
 ## Constitutional Rule
 
