@@ -1,0 +1,104 @@
+{
+  "schema": "matverse.distributed_core.v1",
+  "core_model": "modular_distributed_decentralized",
+  "single_center_of_attack": false,
+  "canonical_pipeline": "PRIMORDIAL -> SVCA -> MNB -> MOTOR -> LEDGER",
+  "canonical_terms": {
+    "MNB": "mem-nano-bit"
+  },
+  "policy": {
+    "direct_main_write": "BLOCK",
+    "core_direct_edit": "BLOCK",
+    "changes_require": "branch_pr_quorum_review",
+    "secret_plaintext": "BLOCK",
+    "secret_policy": "secret_ref-only",
+    "unsafe_gate_change": "FAIL_CLOSED",
+    "twin_can_experiment": true,
+    "twin_can_override_core": false,
+    "runtime_execution_before_provenance": "BLOCK"
+  },
+  "quorum": {
+    "rule": "weighted_constitutional_quorum",
+    "required_ratio": 0.67,
+    "status": "SPECIFICATION_ONLY_NOT_RUNTIME"
+  },
+  "nodes": [
+    {
+      "repo": "matverse-acoa/core",
+      "role": "constitution_interface",
+      "quorum_weight": 1.0,
+      "direct_edit": "BLOCK",
+      "compromise_effect": "interface_drift",
+      "recovery_mode": "restore_from_quorum"
+    },
+    {
+      "repo": "matverse-acoa/Atlas",
+      "role": "ontology_laws",
+      "quorum_weight": 1.0,
+      "direct_edit": "BLOCK",
+      "compromise_effect": "law_drift",
+      "recovery_mode": "ontology_reconciliation"
+    },
+    {
+      "repo": "matverse-acoa/Cassandra",
+      "role": "semantic_mediation",
+      "quorum_weight": 1.0,
+      "direct_edit": "BLOCK",
+      "compromise_effect": "semantic_drift",
+      "recovery_mode": "cross_node_replay"
+    },
+    {
+      "repo": "matverse-acoa/Gate",
+      "role": "admissibility_gate",
+      "quorum_weight": 1.2,
+      "direct_edit": "BLOCK",
+      "compromise_effect": "unsafe_pass_or_false_block",
+      "recovery_mode": "fail_closed"
+    },
+    {
+      "repo": "matverse-acoa/Organismo",
+      "role": "organism_runtime",
+      "quorum_weight": 1.0,
+      "direct_edit": "BLOCK",
+      "compromise_effect": "runtime_drift",
+      "recovery_mode": "replay_from_receipts"
+    },
+    {
+      "repo": "MatVerse-py/mem-nano-bit",
+      "role": "memory_unit",
+      "quorum_weight": 1.1,
+      "direct_edit": "BLOCK",
+      "compromise_effect": "memory_corruption",
+      "recovery_mode": "merkle_receipt_verify"
+    },
+    {
+      "repo": "MatVerse-py/Pose",
+      "role": "proof_receipts",
+      "quorum_weight": 1.1,
+      "direct_edit": "BLOCK",
+      "compromise_effect": "proof_drift",
+      "recovery_mode": "external_anchor_verify"
+    },
+    {
+      "repo": "MatVerse-Hub/twin",
+      "role": "twin_sandbox",
+      "quorum_weight": 0.4,
+      "direct_edit": "ALLOW_BRANCH_ONLY",
+      "compromise_effect": "sandbox_only",
+      "recovery_mode": "discard_twin"
+    }
+  ],
+  "audit_state": {
+    "architecture": "STRONG",
+    "audit_trail": "COMPLETE",
+    "execution": "BLOCKED_CORRECTLY",
+    "institution": "OPEN",
+    "omega_gate": "BLOCK",
+    "reason": [
+      "CVaR > 0.05",
+      "PoLE < 0.80",
+      "ZK provenance incomplete",
+      "secret_ref normalization incomplete"
+    ]
+  }
+}
