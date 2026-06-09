@@ -1,0 +1,9 @@
+{
+  "claims": [
+    {
+      "id": "CLAIM-001",
+      "statement": "The sample artifact declares its operational status and evidence boundary.",
+      "evidence": ["artifact.txt"]
+    }
+  ]
+}
