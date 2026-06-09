@@ -1,0 +1,60 @@
+{
+  "policy_id": "matverse-acoa.o-confrontador.policy.v1",
+  "agent": "O_CONFRONTADOR",
+  "codename": "NEMESIS-Ω",
+  "corpus_blind": true,
+  "allowed_inputs": [
+    "artifact",
+    "claims.json",
+    "evidence_pack",
+    "schemas",
+    "policy"
+  ],
+  "forbidden_context": [
+    "project_history",
+    "author_intention",
+    "value_declarations",
+    "validation_narratives",
+    "externally_unverifiable_claims",
+    "emotional_or_institutional_context"
+  ],
+  "contest_levels": [
+    "NO_CONTEST",
+    "WEAK_CONTEST",
+    "MATERIAL_CONTEST",
+    "FATAL_CONTEST"
+  ],
+  "omega_gate_mapping": {
+    "NO_CONTEST": "PASS_CANDIDATE",
+    "WEAK_CONTEST": "PASS_WITH_NOTES",
+    "MATERIAL_CONTEST": "HOLD",
+    "FATAL_CONTEST": "BLOCK"
+  },
+  "rules": {
+    "missing_claim_id": "MATERIAL_CONTEST",
+    "missing_claim_statement": "MATERIAL_CONTEST",
+    "missing_evidence": "MATERIAL_CONTEST",
+    "invalid_evidence_path": "FATAL_CONTEST",
+    "unreadable_evidence": "MATERIAL_CONTEST",
+    "contradiction_marker": "FATAL_CONTEST",
+    "sensitive_token_exposure": "FATAL_CONTEST",
+    "absolute_language_without_scope": "WEAK_CONTEST"
+  },
+  "sensitive_patterns": [
+    "-----BEGIN PRIVATE KEY-----",
+    "AKIA[0-9A-Z]{16}",
+    "(?i)(api[_-]?key|token|secret|password)\\s*[:=]\\s*[^\\s,;}]+"
+  ],
+  "contradiction_markers": [
+    "CONTRADICTION:",
+    "FATAL:",
+    "FAIL:"
+  ],
+  "absolute_language_terms": [
+    "always",
+    "never",
+    "guaranteed",
+    "100%",
+    "cannot fail"
+  ]
+}

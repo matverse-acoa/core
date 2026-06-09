@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://matverse-acoa.local/schemas/o-confrontador/confrontation_report.schema.json",
+  "title": "O_CONFRONTADOR Confrontation Report",
+  "type": "object",
+  "required": [
+    "agent",
+    "codename",
+    "policy_id",
+    "corpus_blind",
+    "forbidden_context_rejected",
+    "contest_level",
+    "omega_gate_recommendation",
+    "claims_evaluated",
+    "objections",
+    "input_manifest"
+  ],
+  "properties": {
+    "agent": { "const": "O_CONFRONTADOR" },
+    "codename": { "const": "NEMESIS-Ω" },
+    "policy_id": { "type": "string", "minLength": 1 },
+    "corpus_blind": { "const": true },
+    "forbidden_context_rejected": { "const": true },
+    "contest_level": {
+      "enum": ["NO_CONTEST", "WEAK_CONTEST", "MATERIAL_CONTEST", "FATAL_CONTEST"]
+    },
+    "omega_gate_recommendation": {
+      "enum": ["PASS_CANDIDATE", "PASS_WITH_NOTES", "HOLD", "BLOCK"]
+    },
+    "claims_evaluated": { "type": "integer", "minimum": 0 },
+    "objections": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["claim_id", "rule", "severity", "message"],
+        "properties": {
+          "claim_id": { "type": "string" },
+          "rule": { "type": "string" },
+          "severity": {
+            "enum": ["WEAK_CONTEST", "MATERIAL_CONTEST", "FATAL_CONTEST"]
+          },
+          "message": { "type": "string", "minLength": 1 },
+          "path": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "input_manifest": {
+      "type": "object",
+      "required": ["artifact", "claims", "evidence_pack"],
+      "properties": {
+        "artifact": { "$ref": "#/$defs/file_hashes" },
+        "claims": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "evidence_pack": { "$ref": "#/$defs/file_hashes" }
+      },
+      "additionalProperties": false
+    }
+  },
+  "$defs": {
+    "file_hashes": {
+      "type": "object",
+      "additionalProperties": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+    }
+  },
+  "additionalProperties": false
+}

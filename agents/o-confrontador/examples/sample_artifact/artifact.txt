@@ -1,0 +1,2 @@
+Operational status: sample artifact for corpus-blind confrontation.
+Evidence boundary: this file is intentionally minimal and contains no secret material.

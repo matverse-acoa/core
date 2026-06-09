@@ -1,0 +1,19 @@
+{
+  "excludes": [
+    "MANIFEST.sha256.json"
+  ],
+  "files": {
+    "README.md": "f7834a6e28dd9dec862facc0b18bdef6fdd4c89c8a17d071a66d9821cae195b8",
+    "RELEASE_NOTES.md": "94035d61f4e8a8a85f2f608797fd4cb8dccec926e1a1edba49f37108533e9675",
+    "SKILL.md": "d16b5536851230b10a2d446ed528c6565c11998c561ce130566054a84cd1f855",
+    "examples/claims.json": "e78e27bb4be65c9b4deb81b84dffc94704e97b7f15f82565c096d4223313d6d8",
+    "examples/sample_artifact/artifact.txt": "7aaa87493cb77e05422dbb8978e663b2505a140d25d9dbaa88feacd1f4eead38",
+    "policies/confrontation_policy.json": "c2e1cc8ef2ba94c77a635e7722cccfa1893b9d31a974f99fef9203a5286c1227",
+    "schemas/confrontation_report.schema.json": "c8c0e5ff2dcf38e9475bcc5680a0395fbc211459a94e6348fe063b9570335e3a",
+    "scripts/o_confrontador.py": "ac7887163f1aa42ed1cc8d011c7a7683a09cccbb586902e95b83cfa70cabd081",
+    "tests/test_o_confrontador.py": "2b1f68d5e39b70806ec809a1fffff7cc9c9888e93da5c6083ed8404ae37cd962"
+  },
+  "hash_algorithm": "sha256",
+  "manifest_id": "matverse-acoa.o-confrontador.sha256.v1",
+  "scope": "agents/o-confrontador"
+}
