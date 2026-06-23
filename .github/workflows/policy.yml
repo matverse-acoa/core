@@ -1,0 +1,10 @@
+name: Policy
+on: [pull_request]
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: test -f .github/FREEBUFF_SECURITY_ONLY.md
