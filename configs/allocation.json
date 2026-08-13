@@ -1,0 +1,60 @@
+{
+  "version": "allocation.v1",
+  "schema": "organism x domain x sphere x maturity x status",
+  "entries": [
+    {
+      "id": "atlas",
+      "organism": null,
+      "domain": null,
+      "sphere": "constitution",
+      "maturity": "v1.0",
+      "status": "closed_not_implemented",
+      "note": "invariantes, leis, cartografia de linhagem; recuperado da colisão com ACOA em MATVERSE 2.0 §4"
+    },
+    {
+      "id": "acoa",
+      "organism": null,
+      "domain": null,
+      "sphere": "capability",
+      "maturity": "v1.0.0b0",
+      "status": "implemented",
+      "note": "coerência, autopoiese, antifragilidade, auditoria — capacidade transversal, NÃO órgão constitucional"
+    },
+    {
+      "id": "document_twin",
+      "organism": "science",
+      "domain": "human",
+      "sphere": "twin.document",
+      "maturity": "prototype",
+      "status": "implemented",
+      "note": "protocolo bilíngue ORIGINAL→TRANSLATION→SEMANTIC_REVIEW→AUTHOR_CONFIRMATION; primeira fonte de T_I > 0 do corpus"
+    },
+    {
+      "id": "joshou_shu",
+      "organism": "science",
+      "domain": "human",
+      "sphere": "federation.counterpart",
+      "maturity": "n/a",
+      "status": "external",
+      "note": "primeira contraparte com autoridade de domínio distinta (desenvolvimento humano, neurofeedback, coadaptação)"
+    },
+    {
+      "id": "ome1_traversal",
+      "organism": "engineering",
+      "domain": "computational",
+      "sphere": "twin.artifact",
+      "maturity": "n=1",
+      "status": "measured_delta_i_zero_cost_unmeasured",
+      "note": "SOURCE→ATLAS→CASSANDRA→MNB→COHERENCE/REDTEAM→Ω-GATE→RECEIPT→EXECUTOR→RECEIPT→MEMORY_COMMIT→EVIDENCEOS→REPLAY; Ω-Gate PASS, replay EXACT_MATCH, 10/10 estágios, hash-chain válida"
+    },
+    {
+      "id": "bench_harness",
+      "organism": "engineering",
+      "domain": "computational",
+      "sphere": "measurement",
+      "maturity": "prototype",
+      "status": "implemented",
+      "note": "harness de três braços para medir C_K de travessias Twin: ome1_traversal, document_twin, synthetic_baseline"
+    }
+  ]
+}
