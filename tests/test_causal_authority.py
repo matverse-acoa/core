@@ -83,14 +83,10 @@ class CausalAuthorityTests(unittest.TestCase):
 
 
     def test_dilithium3_real_signature_and_tamper(self):
-        import base64
-        from pqcrypto.sign import dilithium3
+        from core.pqc_dilithium import keygen
 
-        pk, sk = dilithium3.generate_keypair()
-        signer = causal_authority.Dilithium3Signer(
-            base64.b64encode(pk).decode("ascii"),
-            base64.b64encode(sk).decode("ascii"),
-        )
+        pk_b64, sk_b64 = keygen()
+        signer = causal_authority.Dilithium3Signer(pk_b64, sk_b64)
         gate = AuthorityGate(signer.sign, signer.verify)
         authority = gate.issue(self.intent, self.lease, issued_at=1000)
 
