@@ -2,6 +2,7 @@ from dataclasses import replace
 import hashlib
 import importlib.util
 from pathlib import Path
+import sys
 import unittest
 
 
@@ -9,6 +10,7 @@ MODULE_PATH = Path(__file__).resolve().parents[1] / "core" / "causal_authority.p
 SPEC = importlib.util.spec_from_file_location("causal_authority", MODULE_PATH)
 assert SPEC is not None and SPEC.loader is not None
 causal_authority = importlib.util.module_from_spec(SPEC)
+sys.modules[SPEC.name] = causal_authority
 SPEC.loader.exec_module(causal_authority)
 
 AuthorityGate = causal_authority.AuthorityGate
