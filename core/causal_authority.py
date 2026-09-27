@@ -1,0 +1,129 @@
+from __future__ import annotations
+
+from dataclasses import dataclass
+from typing import Callable, FrozenSet
+import hashlib
+import hmac
+import json
+import time
+
+
+def _canon(obj: object) -> bytes:
+    return json.dumps(obj, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
+
+
+@dataclass(frozen=True)
+class CausalIntent:
+    principal: str
+    action: str
+    resource: str
+    payload_hash: str
+
+
+@dataclass(frozen=True)
+class CapabilityLease:
+    principal: str
+    actions: FrozenSet[str]
+    resources: FrozenSet[str]
+    expires_at: int
+    nonce: str
+
+
+@dataclass(frozen=True)
+class CausalAuthority:
+    version: str
+    intent: CausalIntent
+    lease: CapabilityLease
+    issued_at: int
+    signature: str
+
+
+class AuthorityError(ValueError):
+    pass
+
+
+class AuthorityGate:
+    """Fail-closed causal authority verifier.
+
+    The signer is injected. Production callers should bind this to the
+    repository's approved signing primitive. Tests may use HMACSigner.
+    """
+
+    def __init__(self, sign: Callable[[bytes], str], verify: Callable[[bytes, str], bool]):
+        self._sign = sign
+        self._verify = verify
+
+    @staticmethod
+    def _body(intent: CausalIntent, lease: CapabilityLease, issued_at: int) -> dict:
+        return {
+            "version": "causal_authority.v1",
+            "intent": {
+                "principal": intent.principal,
+                "action": intent.action,
+                "resource": intent.resource,
+                "payload_hash": intent.payload_hash,
+            },
+            "lease": {
+                "principal": lease.principal,
+                "actions": sorted(lease.actions),
+                "resources": sorted(lease.resources),
+                "expires_at": lease.expires_at,
+                "nonce": lease.nonce,
+            },
+            "issued_at": issued_at,
+        }
+
+    def issue(self, intent: CausalIntent, lease: CapabilityLease, issued_at: int | None = None) -> CausalAuthority:
+        issued_at = int(time.time()) if issued_at is None else int(issued_at)
+        if intent.principal != lease.principal:
+            raise AuthorityError("principal mismatch")
+        if intent.action not in lease.actions:
+            raise AuthorityError("action outside lease")
+        if intent.resource not in lease.resources:
+            raise AuthorityError("resource outside lease")
+        if issued_at > lease.expires_at:
+            raise AuthorityError("lease expired")
+        body = self._body(intent, lease, issued_at)
+        return CausalAuthority("causal_authority.v1", intent, lease, issued_at, self._sign(_canon(body)))
+
+    def verify(self, authority: CausalAuthority, payload: bytes, now: int | None = None) -> bool:
+        now = int(time.time()) if now is None else int(now)
+        if authority.version != "causal_authority.v1":
+            return False
+        intent, lease = authority.intent, authority.lease
+        if hashlib.sha256(payload).hexdigest() != intent.payload_hash:
+            return False
+        if intent.principal != lease.principal:
+            return False
+        if intent.action not in lease.actions or intent.resource not in lease.resources:
+            return False
+        if now > lease.expires_at or authority.issued_at > lease.expires_at:
+            return False
+        return self._verify(_canon(self._body(intent, lease, authority.issued_at)), authority.signature)
+
+
+class ReplayGuard:
+    def __init__(self) -> None:
+        self._used: set[str] = set()
+
+    def consume(self, authority: CausalAuthority) -> bool:
+        nonce = authority.lease.nonce
+        if nonce in self._used:
+            return False
+        self._used.add(nonce)
+        return True
+
+
+class HMACSigner:
+    """Test-only deterministic signing adapter. Do not use as production authority root."""
+
+    def __init__(self, key: bytes):
+        if len(key) < 32:
+            raise ValueError("HMAC test key must be >=32 bytes")
+        self._key = key
+
+    def sign(self, body: bytes) -> str:
+        return hmac.new(self._key, body, hashlib.sha256).hexdigest()
+
+    def verify(self, body: bytes, signature: str) -> bool:
+        return hmac.compare_digest(self.sign(body), signature)
