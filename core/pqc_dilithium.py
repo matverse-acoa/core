@@ -5,7 +5,7 @@ import base64
 import json
 from typing import Any, Dict, Tuple
 
-from pqcrypto.sign import dilithium3
+from pqcrypto.sign import ml_dsa_65
 
 
 def _b64e(b: bytes) -> str:
@@ -13,7 +13,7 @@ def _b64e(b: bytes) -> str:
 
 
 def _b64d(s: str) -> bytes:
-    return base64.b64decode(s.encode("ascii"))
+    return base64.b64decode(s.encode("ascii"), validate=True)
 
 
 def _canon_bytes(obj: Dict[str, Any]) -> bytes:
@@ -21,24 +21,24 @@ def _canon_bytes(obj: Dict[str, Any]) -> bytes:
 
 
 def keygen() -> Tuple[str, str]:
-    """Gera par de chaves Dilithium3 (pk, sk) em Base64."""
-    pk, sk = dilithium3.generate_keypair()
+    """Generate ML-DSA-65 (FIPS 204; Dilithium3 lineage) keys in Base64."""
+    pk, sk = ml_dsa_65.keygen()
     return _b64e(pk), _b64e(sk)
 
 
 def sign(obj: Dict[str, Any], sk_b64: str) -> str:
-    """Assina o payload canônico (JSON ordenado) com Dilithium3, retorna Base64."""
+    """Sign canonical JSON with ML-DSA-65 and return Base64 signature."""
     sk = _b64d(sk_b64)
-    sig = dilithium3.sign(_canon_bytes(obj), sk)
+    sig = ml_dsa_65.sign(sk, _canon_bytes(obj))
     return _b64e(sig)
 
 
 def verify(obj: Dict[str, Any], sig_b64: str, pk_b64: str) -> bool:
-    """Verifica assinatura Dilithium3 (payload canônico)."""
-    pk = _b64d(pk_b64)
-    sig = _b64d(sig_b64)
+    """Verify an ML-DSA-65 signature over canonical JSON."""
     try:
-        dilithium3.verify(sig, _canon_bytes(obj), pk)
+        pk = _b64d(pk_b64)
+        sig = _b64d(sig_b64)
+        ml_dsa_65.verify(pk, _canon_bytes(obj), sig)
         return True
     except Exception:
         return False
