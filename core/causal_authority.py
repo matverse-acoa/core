@@ -9,7 +9,9 @@ import time
 
 
 def _canon(obj: object) -> bytes:
-    return json.dumps(obj, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
+    return json.dumps(
+        obj, sort_keys=True, separators=(",", ":"), ensure_ascii=False
+    ).encode("utf-8")
 
 
 @dataclass(frozen=True)
@@ -43,18 +45,20 @@ class AuthorityError(ValueError):
 
 
 class AuthorityGate:
-    """Fail-closed causal authority verifier.
+    """Fail-closed causal authority verifier."""
 
-    The signer is injected. Production callers should bind this to the
-    repository's approved signing primitive. Tests may use HMACSigner.
-    """
-
-    def __init__(self, sign: Callable[[bytes], str], verify: Callable[[bytes, str], bool]):
+    def __init__(
+        self,
+        sign: Callable[[bytes], str],
+        verify: Callable[[bytes, str], bool],
+    ):
         self._sign = sign
         self._verify = verify
 
     @staticmethod
-    def _body(intent: CausalIntent, lease: CapabilityLease, issued_at: int) -> dict:
+    def _body(
+        intent: CausalIntent, lease: CapabilityLease, issued_at: int
+    ) -> dict:
         return {
             "version": "causal_authority.v1",
             "intent": {
@@ -73,7 +77,12 @@ class AuthorityGate:
             "issued_at": issued_at,
         }
 
-    def issue(self, intent: CausalIntent, lease: CapabilityLease, issued_at: int | None = None) -> CausalAuthority:
+    def issue(
+        self,
+        intent: CausalIntent,
+        lease: CapabilityLease,
+        issued_at: int | None = None,
+    ) -> CausalAuthority:
         issued_at = int(time.time()) if issued_at is None else int(issued_at)
         if intent.principal != lease.principal:
             raise AuthorityError("principal mismatch")
@@ -84,9 +93,20 @@ class AuthorityGate:
         if issued_at > lease.expires_at:
             raise AuthorityError("lease expired")
         body = self._body(intent, lease, issued_at)
-        return CausalAuthority("causal_authority.v1", intent, lease, issued_at, self._sign(_canon(body)))
+        return CausalAuthority(
+            "causal_authority.v1",
+            intent,
+            lease,
+            issued_at,
+            self._sign(_canon(body)),
+        )
 
-    def verify(self, authority: CausalAuthority, payload: bytes, now: int | None = None) -> bool:
+    def verify(
+        self,
+        authority: CausalAuthority,
+        payload: bytes,
+        now: int | None = None,
+    ) -> bool:
         now = int(time.time()) if now is None else int(now)
         if authority.version != "causal_authority.v1":
             return False
@@ -99,7 +119,8 @@ class AuthorityGate:
             return False
         if now > lease.expires_at or authority.issued_at > lease.expires_at:
             return False
-        return self._verify(_canon(self._body(intent, lease, authority.issued_at)), authority.signature)
+        body = self._body(intent, lease, authority.issued_at)
+        return self._verify(_canon(body), authority.signature)
 
 
 class ReplayGuard:
@@ -115,7 +136,7 @@ class ReplayGuard:
 
 
 class HMACSigner:
-    """Test-only deterministic signing adapter. Do not use as production authority root."""
+    """Test-only signing adapter. Not a production authority root."""
 
     def __init__(self, key: bytes):
         if len(key) < 32:
