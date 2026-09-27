@@ -81,6 +81,42 @@ class CausalAuthorityTests(unittest.TestCase):
         bad = replace(self.auth, lease=bad_lease)
         self.assertFalse(self.gate.verify(bad, self.payload, now=1500))
 
+
+    def test_dilithium3_real_signature_and_tamper(self):
+        import base64
+        from pqcrypto.sign import dilithium3
+
+        pk, sk = dilithium3.generate_keypair()
+        signer = causal_authority.Dilithium3Signer(
+            base64.b64encode(pk).decode("ascii"),
+            base64.b64encode(sk).decode("ascii"),
+        )
+        gate = AuthorityGate(signer.sign, signer.verify)
+        authority = gate.issue(self.intent, self.lease, issued_at=1000)
+
+        self.assertTrue(gate.verify(authority, self.payload, now=1500))
+        self.assertFalse(
+            gate.verify(
+                replace(authority, signature="AAAA"),
+                self.payload,
+                now=1500,
+            )
+        )
+        self.assertFalse(
+            gate.verify(authority, b"tampered-payload", now=1500)
+        )
+        mutated_lease = replace(
+            authority.lease,
+            resources=frozenset({"atlas:/public", "secrets:/root"}),
+        )
+        self.assertFalse(
+            gate.verify(
+                replace(authority, lease=mutated_lease),
+                self.payload,
+                now=1500,
+            )
+        )
+
     def test_replay_guard(self):
         guard = ReplayGuard()
         self.assertTrue(guard.consume(self.auth))
