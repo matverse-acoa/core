@@ -150,32 +150,26 @@ class HMACSigner:
         return hmac.compare_digest(self.sign(body), signature)
 
 
+
 class Dilithium3Signer:
-    """Production-capable adapter over the repository PQC primitive."""
+    """Compatibility adapter backed by canonical ML-DSA-65 (FIPS 204)."""
 
     def __init__(self, public_key_b64: str, secret_key_b64: str | None = None):
-        from pqcrypto.sign import dilithium3
-        import base64
+        self._pk = public_key_b64
+        self._sk = secret_key_b64
 
-        self._dilithium3 = dilithium3
-        self._b64 = base64
-        self._pk = base64.b64decode(public_key_b64.encode("ascii"))
-        self._sk = (
-            base64.b64decode(secret_key_b64.encode("ascii"))
-            if secret_key_b64 is not None
-            else None
-        )
+    @staticmethod
+    def _object(body: bytes) -> dict:
+        return {"causal_authority_canonical_b64": __import__("base64").b64encode(body).decode("ascii")}
 
     def sign(self, body: bytes) -> str:
         if self._sk is None:
             raise AuthorityError("secret key unavailable")
-        sig = self._dilithium3.sign(body, self._sk)
-        return self._b64.b64encode(sig).decode("ascii")
+        from core.pqc_dilithium import sign
+
+        return sign(self._object(body), self._sk)
 
     def verify(self, body: bytes, signature: str) -> bool:
-        try:
-            sig = self._b64.b64decode(signature.encode("ascii"), validate=True)
-            self._dilithium3.verify(sig, body, self._pk)
-            return True
-        except Exception:
-            return False
+        from core.pqc_dilithium import verify
+
+        return verify(self._object(body), signature, self._pk)
